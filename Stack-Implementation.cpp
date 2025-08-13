@@ -1,88 +1,118 @@
 #include <iostream>
-#include <cmath>
 
 using namespace std;
 
 
-class Complex
+class myStack
 {
-    float real;
-    float imag;
+private:
+    int size;
+    int *st;
+    int tos;
+    int counter;
 
 public:
-    void setReal(float);
-    void setImag(float);
+    myStack(int n=10)
+    {
+        tos = 0;
+        size = n;
+        st = new int[size];
+        cout<<"This is constructor of stack object with size "<<n<<endl;
+        counter++;
+    }
 
-    float getReal();
-    float getImag();
 
-    Complex add(Complex c);
-    Complex sub(Complex c);
+    //passing two parameters(this:new one, z:old one)
+    myStack(myStack &z)
+    {
+        tos = z.tos;
+        size = z.size;
+        st = new int [size]; //new allocation
 
-    void Print();
+        for(int i=0; i<tos; i++)
+        {
+            st[i] = z.st[i];
+        }
+
+        counter++;
+    }
+
+    ~myStack()
+    {
+        delete[ ] st;
+        cout<<"This is destructor"<<endl;
+        counter--;
+    }
+
+    void push(int);
+    int pop();
+
+    //friend void viewContent(myStack &x);
+
+    friend void viewContent(myStack x);
 };
+
+
+
 
 
 int main()
 {
-    Complex com1, com2, resCom;
+    myStack s1(2);
+    s1.push(5);
+    s1.push(6);
+    s1.push(7);
+    //cout<<s1.pop();
 
-    com1.setReal(7);
-    com1.setImag(2);
-
-    com2.setReal(5);
-    com2.setImag(3);
-
-    resCom = com1.add(com2);
-    resCom.Print();
+    viewContent(s1);
     return 0;
 }
 
-void Complex::setReal(float r)
+
+void myStack::push(int n)
 {
-    real = r;
-}
-
-void Complex::setImag(float i)
-{
-    imag = i;
-}
-
-float Complex::getReal()
-{
-    return real;
-}
-
-float Complex::getImag()
-{
-    return imag;
-}
-
-
-
-void Complex::Print()
-{
-    if(imag < 0)
-        cout << real << " - " << fabs(imag) << "i" << endl;
+    if(tos == size)
+    {
+        cout<<"Stack is Full"<<endl;
+    }
     else
-        cout << real << " + " << imag << "i" << endl;
-}
+    {
+        st[tos] = n;
+        tos++;
+    }
 
-Complex Complex::add(Complex c)
+};
+
+
+int myStack::pop()
 {
-    Complex temp;
-    temp.real = real + c.real;
-    temp.imag = imag + c.imag;
-
-    return temp;
+    int retVal;
+    if(tos == 0)
+    {
+        cout<<"Stack is empty"<<endl;
+        retVal = -1;
+    }
+    else
+    {
+        tos--;
+        retVal = st[tos];
+    }
+    return retVal;
 }
 
-Complex Complex::sub(Complex c)
+
+void viewContent(myStack x)
 {
-    Complex temp;
-    temp.real = real - c.real;
-    temp.imag = imag - c.imag;
 
-    return temp;
+    int t = x.tos;
+    while(t != 0)
+    {
+
+        cout<<x.st[--t]<<endl;
+    }
+
 }
+
+
+
 

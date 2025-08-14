@@ -19,6 +19,12 @@ public:
     Complex add(Complex c);
     Complex sub(Complex c);
 
+    Complex operator + (Complex c);
+    Complex operator + (float x);
+    friend Complex operator + (float x, Complex c);
+
+    int operator == (Complex c);
+
     void Print();
 };
 
@@ -33,8 +39,22 @@ int main()
     com2.setReal(5);
     com2.setImag(3);
 
-    resCom = com1.add(com2);
+    //resCom = com1.add(com2);
+    //resCom.Print();
+
+    resCom = com1 + com2;
     resCom.Print();
+
+    resCom = com1 + 10;
+    resCom.Print();
+
+    resCom = 10 + com2;
+    resCom.Print();
+
+
+    com1 = com2;
+    int x = (com1 == com2);
+    cout<<x<<endl;
     return 0;
 }
 
@@ -86,3 +106,47 @@ Complex Complex::sub(Complex c)
     return temp;
 }
 
+//Operator Overloading (Complex + Complex)
+Complex Complex::operator+ (Complex c)
+{
+    Complex b;
+    b.real = this->real + c.real;
+    b.imag = this->imag + c.imag;
+
+    return b;
+}
+
+//Operator Overloading (Complex + float)
+Complex Complex::operator+ (float x)
+{
+    Complex b;
+    b.real = this->real + x;
+    b.imag = this->imag ;
+
+    return b;
+}
+
+//Operator Overloading (float + complex)
+
+Complex operator+ (float x, Complex c)
+{
+    Complex b;
+    b.real = c.real + x;
+    b.imag = c.real;
+
+    return b;
+}
+
+//Operator Overloading (complex == complex)
+int Complex::operator== (Complex c)
+{
+   if(this->real == c.real && this->imag == c.imag)
+   {
+       return 1;
+   }
+   else
+   {
+       return -1;
+   }
+
+}

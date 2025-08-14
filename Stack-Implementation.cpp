@@ -12,6 +12,7 @@ private:
     int counter;
 
 public:
+    //constructor 1
     myStack(int n=10)
     {
         tos = 0;
@@ -21,8 +22,8 @@ public:
         counter++;
     }
 
-
     //passing two parameters(this:new one, z:old one)
+    //constructor 2
     myStack(myStack &z)
     {
         tos = z.tos;
@@ -37,6 +38,7 @@ public:
         counter++;
     }
 
+    //destructor
     ~myStack()
     {
         delete[ ] st;
@@ -50,6 +52,7 @@ public:
     //friend void viewContent(myStack &x);
 
     friend void viewContent(myStack x);
+    void operator = (myStack s);
 };
 
 
@@ -58,13 +61,20 @@ public:
 
 int main()
 {
-    myStack s1(2);
+    myStack s1(3);
     s1.push(5);
     s1.push(6);
     s1.push(7);
-    //cout<<s1.pop();
+
+    myStack s2(3);
+    s2.push(8);
+    s2.push(9);
+    s2.push(1);
+
+    s2 = s1;
 
     viewContent(s1);
+    viewContent(s2);
     return 0;
 }
 
@@ -114,5 +124,15 @@ void viewContent(myStack x)
 }
 
 
-
+void myStack::operator= (myStack s)
+{
+    delete[] this->st;
+    this->tos = s.tos;
+    this->size = s.size;
+    this->st = new int [size];
+    for(int i=0; i<tos; i++)
+    {
+        this->st[i] = s.st[i];
+    }
+}
 
